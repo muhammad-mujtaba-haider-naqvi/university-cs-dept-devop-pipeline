@@ -1,0 +1,52 @@
+name: CD - Environment Deployment
+
+on:
+  push:
+    branches:
+      - develop
+      - release
+      - production
+
+jobs:
+
+  deploy-development:
+    if: github.ref == 'refs/heads/develop'
+    name: Deploy to Development
+    runs-on: ubuntu-latest
+    environment: development
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Development Deployment Trigger
+        run: |
+          echo "Deploying CloudShop to Development Environment"
+
+  deploy-staging:
+    if: github.ref == 'refs/heads/release'
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    environment: staging
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Staging Deployment Trigger
+        run: |
+          echo "Deploying CloudShop to Staging Environment"
+
+  deploy-production:
+    if: github.ref == 'refs/heads/production'
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Production Deployment Trigger
+        run: |
+          echo "Deploying CloudShop to Production Environment"
