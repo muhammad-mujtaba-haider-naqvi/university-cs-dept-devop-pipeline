@@ -6,6 +6,7 @@ on:
       - develop
       - release
       - production
+
   pull_request:
     branches:
       - develop
@@ -14,24 +15,28 @@ on:
 
 jobs:
   frontend-ci:
-    name: HTML Validation and Docker Build
+    name: HTML CSS Linting and Docker Build
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install HTML Validator
+      - name: Install HTML and CSS Linters
         run: |
-          npm install -g htmlhint
+          npm install -g htmlhint stylelint stylelint-config-standard
 
-      - name: Validate HTML
+      - name: Create Stylelint Configuration
+        run: |
+          echo '{ "extends": "stylelint-config-standard" }' > .stylelintrc.json
+
+      - name: Run HTML Lint
         run: |
           htmlhint src/frontend/index.html
 
-      - name: Validate CSS File Exists
+      - name: Run CSS Lint
         run: |
-          test -f src/frontend/style.css
+          stylelint "src/frontend/**/*.css"
 
       - name: Build Docker Image
         run: |
